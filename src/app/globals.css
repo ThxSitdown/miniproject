@@ -3,63 +3,17 @@
     object-fit: cover;
 }
 
-/* styles.css */
-.navbar {
-    padding: 10px 0; /* ระยะห่างขอบบนและล่างของ Navbar */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เงาขอบของ Navbar */
-}
-
-.navbar-brand {
-    margin-right: 30px; /* ระยะห่างขอบขวาของโลโก้ */
-}
-
-.navbar-nav .nav-link {
-    margin-right: 10px; /* ระยะห่างระหว่างลิงก์ */
-}
-
 .btn-outline-pink {
-    color: #ff69b4; /* สีของปุ่ม */
-    border-color: #ff69b4; /* สีเส้นขอบของปุ่ม */
-}
-
-.logo {
-    width: 120px; /* ขนาดความกว้างของโลโก้ */
-    height: 120px; /* ขนาดความสูงของโลโก้ */
-    margin-right: 10px; /* ระยะห่างขวาของโลโก้ */
-}
-
-.btn-outline-pink {
-    color: #ff69b4; /* สีของปุ่ม */
-    border-color: #ff69b4; /* สีขอบของปุ่ม */
-    font-size: 16px; /* ขนาดตัวอักษรของปุ่ม */
-    padding: 8px 20px; /* ขนาดการเรียงตำแหน่งของปุ่ม */
+    color: #d63384;
+    border-color: #d63384;
 }
 
 .btn-outline-pink:hover {
-    background-color: #ff69b4; /* สีพื้นหลังเมื่อโฮเวอร์ปุ่ม */
-    color: #fff; /* สีตัวอักษรเมื่อโฮเวอร์ปุ่ม */
+    color: #fff;
+    background-color: #d63384;
+    border-color: #d63384;
 }
 
-
-@media (max-width: 992px) {
-    .nav-link, .btn {
-        font-size: 0.9rem;
-        padding: 0.4rem 0.8rem;
-    }
-    .navbar-brand {
-        font-size: 1.3rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-link, .btn {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.6rem;
-    }
-    .navbar-brand {
-        font-size: 1.2rem;
-    }
-}
 
 .card-img-top {
     width: 100%;

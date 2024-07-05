@@ -1,13 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-                <Link className="navbar-brand" href="/">
-                    <Image src="/logov2.png" alt="Logo" width={100} height={100} className="logo" />
-                </Link>
+                <Link className="navbar-brand" href="/">Navbar</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon" />
                 </button>
