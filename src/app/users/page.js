@@ -8,7 +8,7 @@ export default function Page() {
   useEffect(() => {
     async function getUsers() {
       try {
-        const res = await fetch('http://localhost:3001/api/users');
+        const res = await fetch('http://localhost:3000/api/users');
         if (!res.ok) {
           console.error('Failed to fetch data');
           return;
