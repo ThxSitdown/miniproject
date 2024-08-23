@@ -28,7 +28,7 @@ export default function Navbar() {
                             <button className="btn btn-outline-pink" type="button">Sign Up</button>
                         </Link>
                         <Link href="/signin">
-                            <button className="btn btn-outline-pink" type="button">Sign In</button>
+                            <button className="btn btn-outline-pink" type="button">LogIn</button>
                         </Link>
                     </div>
                 </div>
