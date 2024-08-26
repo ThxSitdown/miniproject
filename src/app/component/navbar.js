@@ -1,6 +1,35 @@
-import Link from "next/link";
+'use client';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        // Function to check login status
+        const checkLoginStatus = () => {
+            const token = localStorage.getItem('token');
+            setIsLoggedIn(!!token);
+        };
+
+        // Initial check
+        checkLoginStatus();
+
+        // Optional: Add event listener to detect localStorage changes
+        window.addEventListener('storage', checkLoginStatus);
+
+        // Clean up the event listener on component unmount
+        return () => window.removeEventListener('storage', checkLoginStatus);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        router.push('/');
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -24,12 +53,18 @@ export default function Navbar() {
                         </li>
                     </ul>
                     <div className="d-flex align-items-center gap-2">
-                        <Link href="/signup">
-                            <button className="btn btn-outline-pink" type="button">Sign Up</button>
-                        </Link>
-                        <Link href="/signin">
-                            <button className="btn btn-outline-pink" type="button">LogIn</button>
-                        </Link>
+                        {isLoggedIn ? (
+                            <button className="btn btn-outline-pink" type="button" onClick={handleLogout}>Logout</button>
+                        ) : (
+                            <>
+                                <Link href="/signup">
+                                    <button className="btn btn-outline-pink" type="button">Sign Up</button>
+                                </Link>
+                                <Link href="/login">
+                                    <button className="btn btn-outline-pink" type="button">LogIn</button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
