@@ -1,9 +1,9 @@
 
-import Footer from "./component/Footer";
+import SensorDataGraph from '../components/SensorDataGraph';
 export default function Home() {
   return (
     <>
-
+      <SensorDataGraph />
     </>
   );
 }
