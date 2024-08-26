@@ -1,9 +1,9 @@
+import SensorDataGraph from './component/SensorDataGraph';
 
-import SensorDataGraph from '../components/SensorDataGraph';
 export default function Home() {
   return (
     <>
-      <SensorDataGraph />
+      <SensorDataGraph/>
     </>
   );
 }
