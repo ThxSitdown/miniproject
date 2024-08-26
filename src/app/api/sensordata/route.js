@@ -11,12 +11,12 @@ client.connect();
 
 export async function POST(request) {
   try {
-    const { sensor_id, temperature, humidity } = await request.json();
-    console.log('Received data:', { sensor_id, temperature, humidity });
+    const { temperature, humidity } = await request.json();
+    console.log('Received data:', { temperature, humidity });
 
     const res = await client.query(
-      'INSERT INTO sensor_data (sensor_id, temperature, humidity) VALUES ($1, $2, $3) RETURNING *',
-      [sensor_id, temperature, humidity]
+      'INSERT INTO sensor_data (temperature, humidity) VALUES ($1, $2) RETURNING *',
+      [temperature, humidity]
     );
     console.log('Database response:', res.rows[0]);
 
