@@ -40,7 +40,7 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className="nav-link active" aria-current="page" href="/">Home</Link>
+                            <Link className="nav-link active" aria-current="page" href="/">Tem</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" href="/about">About</Link>
@@ -52,20 +52,6 @@ export default function Navbar() {
                             <Link className="nav-link" href="/contact">Contact</Link>
                         </li>
                     </ul>
-                    <div className="d-flex align-items-center gap-2">
-                        {isLoggedIn ? (
-                            <button className="btn btn-outline-pink" type="button" onClick={handleLogout}>Logout</button>
-                        ) : (
-                            <>
-                                <Link href="/signup">
-                                    <button className="btn btn-outline-pink" type="button">Sign Up</button>
-                                </Link>
-                                <Link href="/login">
-                                    <button className="btn btn-outline-pink" type="button">LogIn</button>
-                                </Link>
-                            </>
-                        )}
-                    </div>
                 </div>
             </div>
         </nav>
