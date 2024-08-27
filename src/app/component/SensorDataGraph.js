@@ -28,10 +28,25 @@ ChartJS.register(
 // SensorStatus Component
 const SensorStatus = ({ motor_Status, heater_Status }) => {
   return (
-    <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ddd', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+    <div style={{ 
+      marginTop: '20px', 
+      padding: '10px', 
+      border: '1px solid #ddd', 
+      borderRadius: '5px', 
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
+      textAlign: 'center' 
+    }}>
       <h3>Sensor Status</h3>
-      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Motor: <span style={{ color: motor_Status ? 'green' : 'red' }}>{motor_Status ? 'On' : 'Off'}</span></p>
-      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>{heater_Status ? 'On' : 'Off'}</span></p>
+      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
+        Motor: <span style={{ color: motor_Status ? 'green' : 'red' }}>
+          {motor_Status ? 'On' : 'Off'}
+        </span>
+      </p>
+      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
+        Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>
+          {heater_Status ? 'On' : 'Off'}
+        </span>
+      </p>
     </div>
   );
 };
@@ -190,7 +205,9 @@ const SensorDataGraph = () => {
           />
         </div>
       </div>
-      <SensorStatus motor_Status={motor_Status} heater_Status={heater_Status} />
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+        <SensorStatus motor_Status={motor_Status} heater_Status={heater_Status} />
+      </div>
     </div>
   );
 };
