@@ -28,13 +28,13 @@ ChartJS.register(
 // SensorStatus Component
 const SensorStatus = ({ motor_Status, heater_Status }) => {
   return (
-    <div>
-      <p>Motor: {motor_Status ? 'On' : 'Off'}</p>
-      <p>Heater: {heater_Status ? 'On' : 'Off'}</p>
+    <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ddd', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+      <h3>Sensor Status</h3>
+      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Motor: <span style={{ color: motor_Status ? 'green' : 'red' }}>{motor_Status ? 'On' : 'Off'}</span></p>
+      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>{heater_Status ? 'On' : 'Off'}</span></p>
     </div>
   );
 };
-
 
 // SensorDataGraph Component
 const SensorDataGraph = () => {
@@ -119,9 +119,10 @@ const SensorDataGraph = () => {
   }, []);
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div style={{ width: '48%' }}>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
+        <div style={{ flex: 1, minWidth: '45%' }}>
+          <h2>Temperature Graph</h2>
           <Line
             data={temperatureData}
             options={{
@@ -154,7 +155,8 @@ const SensorDataGraph = () => {
             }}
           />
         </div>
-        <div style={{ width: '48%' }}>
+        <div style={{ flex: 1, minWidth: '45%' }}>
+          <h2>Humidity Graph</h2>
           <Line
             data={humidityData}
             options={{
@@ -194,4 +196,3 @@ const SensorDataGraph = () => {
 };
 
 export default SensorDataGraph;
-

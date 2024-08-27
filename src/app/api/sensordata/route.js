@@ -34,8 +34,8 @@ export async function GET() {
 export async function POST(request) {
   try {
     const { sensor_id, temperature, humidity, motor_status, heater_status } = await request.json();
-    console.log(sensor_id, temperature, humidity, motor_status, heater_status);
-
+    console.log("Received motor_status:", motor_status);  // พิมพ์ค่าที่ได้รับ
+    console.log("Received heater_status:", heater_status);  // พิมพ์ค่าที่ได้รับ
     
     if (!sensor_id || temperature == null || humidity == null) {
       return new Response(JSON.stringify({ error: 'Invalid input data' }), {
