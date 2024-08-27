@@ -10,29 +10,19 @@ export default function Contact() {
   <div className="text-center my-4 fs-5 fw-bold "><h1>ที่อยู่ติดต่อ</h1></div>
   <div className="container text-center">
     <div className="row">
-      <div className="col-6">
+      <div className="col-3">
 
-        <div className="text-left"><div className="row">
-            <span>กองเทคโนโลยีดิจิทัล</span><br />
-            <span>สำนักงานมหาวิทยาลัย มหาวิทยาลัยแม่โจ้</span><br />
-            <span>63 หมู่ 4 ตำบลหนองหาร อำเภอสันทราย จังหวัดเชียงใหม่ 50290</span><br />
-            <span>Technology Digital Division : Maejo University ChiangMai - Phrao Road , Sansai ChiangMai Thailand 50290 Tel (66-53)873282</span><br />
-          </div>
-        </div>
       </div>
-      <div className="col-3 text-left">
-        <p>ผู้อำนวยการ</p>
-        <p>งานอำนวยการ</p>
-        <p>งานเครือข่ายและบริการอินเตอร์เน็ต</p>
-        <p>งานพัฒนาสื่อสารสนเทศ</p>
-        <p>งานวิจัยและพัฒนา</p>
+      <div className="col-6 text-center">
+      <div className="row">
+            <span>สาขาวิชาเทคโนโลยีสารสนเทศ</span><br />
+            <span>วิทยาลัยเทคนิคเชียงใหม่ สถาบันการอาชีวศึกษาภาคเหนือ 1</span><br />
+            <span>เลขที่ 9 ถนนเวียงแก้ว ตำบลศรีภูมิ อำเภอเมืองเชียงใหม่ จังหวัดเชียงใหม่ 50200</span><br />
+            <span>โทรศัพท์ : 053 217 708 | โทรสาร : 053 221 599 | อีเมล : ctc@cmtc.ac.th</span><br />
+          </div>
       </div>
       <div className="col-3">
-        <p>0-5387-3268</p>
-        <p>0-5387-3262</p>
-        <p>0-5387-3270</p>
-        <p>0-5387-3291</p>
-        <p>0-5387-3285</p>
+
       </div>
     </div>
   </div>
@@ -44,7 +34,7 @@ export default function Contact() {
       </div>
       <div className="panel-body">
         <p style={{textAlign: 'center'}}>
-          <iframe width={900} height={450} style={{border: 0}} src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3774.8038072348804!2d99.01047347477073!3d18.89578295760628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da23fb2078c8a1%3A0x326a284810429a08!2z4LiX4Li14LmI4LiX4Liz4LiH4Liy4LiZIOC4qOC4ueC4meC4ouC5jCBJVA!5e0!3m2!1sth!2sth!4v1709001837705!5m2!1sth!2sth" frameBorder={0} allowFullScreen="allowfullscreen" />
+          <iframe width={900} height={450} style={{border: 0}} src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d30216.943449712708!2d98.983919!3d18.792897!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da3a9a71d80adf%3A0xe41f657fc5052416!2z4Lin4Li04LiX4Lii4Liy4Lil4Lix4Lii4LmA4LiX4LiE4LiZ4Li04LiE4LmA4LiK4Li14Lii4LiH4LmD4Lir4Lih4LmI!5e0!3m2!1sth!2sth!4v1724754679352!5m2!1sth!2sth" />
         </p>
       </div>
     </div>
