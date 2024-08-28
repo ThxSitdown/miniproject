@@ -30,7 +30,7 @@ const LedControl = () => {
   const setTimer = async () => {
     try {
       const data = {
-        led_status: ledStatus, // ส่งสถานะ LED ที่อัปเดต
+        ledStatus: ledStatus,
         led_timer_start: timerStart,
         led_timer_end: timerEnd,
       };

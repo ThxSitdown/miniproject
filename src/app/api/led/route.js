@@ -1,5 +1,4 @@
-// app/api/led/route.js
-import { Pool } from 'pg'; // ใช้ Pool แทน Client
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,6 +14,18 @@ const handleError = (error) => {
     headers: { 'Content-Type': 'application/json' },
   });
 };
+
+export async function GET() {
+  try {
+    const result = await pool.query('SELECT led_timer_start, led_timer_end FROM sensor_data ORDER BY id DESC LIMIT 1');
+    return new Response(JSON.stringify(result.rows[0]), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    return handleError(error);
+  }
+}
 
 export async function POST(request) {
   try {
