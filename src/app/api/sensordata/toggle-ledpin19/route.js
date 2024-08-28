@@ -27,8 +27,12 @@ export async function POST(request) {
       });
     }
 
-    // You might want to store the status or update it in your database
-    // For now, just return the status received
+    // อัพเดทสถานะ LED pin19 ในฐานข้อมูลถ้าต้องการ
+    await pool.query(
+      'UPDATE led_status SET status = $1 WHERE id = 1', // ใช้การอัพเดทให้ตรงกับฐานข้อมูลของคุณ
+      [ledpin19_status]
+    );
+
     return new Response(JSON.stringify({ ledpin19_status }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -37,3 +41,4 @@ export async function POST(request) {
     return handleError(error);
   }
 }
+

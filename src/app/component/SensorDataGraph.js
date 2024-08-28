@@ -1,5 +1,3 @@
-// app/component/SensorDataGraph.js
-
 "use client";
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
@@ -14,7 +12,6 @@ import {
   Legend
 } from 'chart.js';
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -25,7 +22,6 @@ ChartJS.register(
   Legend
 );
 
-// SensorStatus Component
 const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19Toggle }) => {
   return (
     <div style={{ 
@@ -65,7 +61,6 @@ const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19
   );
 };
 
-// SensorDataGraph Component
 const SensorDataGraph = () => {
   const [temperatureData, setTemperatureData] = useState({
     labels: [],
@@ -254,4 +249,3 @@ const SensorDataGraph = () => {
 };
 
 export default SensorDataGraph;
-
