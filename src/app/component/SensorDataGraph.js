@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19Toggle }) => {
+const SensorStatus = ({ motor_status, heater_status, ledpin19_status }) => {
   return (
     <div style={{ 
       marginTop: '20px', 
@@ -40,15 +40,15 @@ const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19
       </p>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
         Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>
-          {heater_Status ? 'warm' : 'cool'}
+          {heater_status ? 'warm' : 'cool'}
         </span>
       </p>
       <button 
-        onClick={onLedpin19Toggle} 
+        onClick={ledpin19_status} 
         style={{
           marginTop: '10px',
           padding: '10px',
-          backgroundColor: ledpin19_Status ? 'red' : 'green',
+          backgroundColor: ledpin19_status ? 'red' : 'green',
           color: 'white',
           border: 'none',
           borderRadius: '5px',
@@ -88,9 +88,9 @@ const SensorDataGraph = () => {
     ],
   });
 
-  const [motor_Status, setMotorStatus] = useState(false);
-  const [heater_Status, setHeaterStatus] = useState(false);
-  const [ledpin19_Status, setLedpin19Status] = useState(false);
+  const [motor_status, setMotorStatus] = useState(false);
+  const [heater_status, setHeaterStatus] = useState(false);
+  const [ledpin19_status, setLedpin19Status] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
