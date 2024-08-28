@@ -27,19 +27,9 @@ export async function POST(request) {
       });
     }
 
-    const result = await pool.query(
-      'UPDATE sensor_data SET ledpin19_status = $1 ORDER BY id DESC LIMIT 1 RETURNING *',
-      [ledpin19_status]
-    );
-
-    if (result.rowCount === 0) {
-      return new Response(JSON.stringify({ error: 'No data found to update' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    return new Response(JSON.stringify(result.rows[0]), {
+    // You might want to store the status or update it in your database
+    // For now, just return the status received
+    return new Response(JSON.stringify({ ledpin19_status }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });

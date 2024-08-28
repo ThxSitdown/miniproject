@@ -162,7 +162,8 @@ const SensorDataGraph = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      setLedpin19Status(newStatus);
+      const result = await response.json();
+      setLedpin19Status(result.ledpin19_status);
     } catch (error) {
       console.error('Error toggling LED:', error);
     }
