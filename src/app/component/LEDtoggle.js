@@ -1,6 +1,3 @@
-// app/component/LEDtoggle.js
-
-
 "use client";
 import React, { useState } from 'react';
 
@@ -20,8 +17,8 @@ const LedControl = () => {
       });
       const result = await response.json();
       if (response.ok) {
-        setLedStatus(result.ledStatus);
-        console.log('LED status updated:', result.ledStatus);
+        setLedStatus(result.led_status);
+        console.log('LED status updated:', result.led_status);
       } else {
         console.error('Failed to toggle LED:', result.error);
       }
@@ -29,22 +26,22 @@ const LedControl = () => {
       console.error('Error toggling LED:', error);
     }
   };
-  
 
   const setTimer = async () => {
     try {
       const data = {
+        led_status: ledStatus, // ส่งสถานะ LED ที่อัปเดต
         led_timer_start: timerStart,
         led_timer_end: timerEnd,
       };
-      const response = await fetch('/api/led/timer', {
+      const response = await fetch('/api/led', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-      const result = await response.json();  // เพิ่มการอ่านผลลัพธ์จากการตอบกลับ
+      const result = await response.json();
       if (!response.ok) {
         console.error('Failed to set timer:', result.error);
       } else {
@@ -54,7 +51,6 @@ const LedControl = () => {
       console.error('Error setting timer:', error);
     }
   };
-  
 
   return (
     <div>
