@@ -26,7 +26,7 @@ ChartJS.register(
 );
 
 // SensorStatus Component
-const SensorStatus = ({ motor_Status, heater_Status }) => {
+const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19Toggle }) => {
   return (
     <div style={{ 
       marginTop: '20px', 
@@ -47,6 +47,20 @@ const SensorStatus = ({ motor_Status, heater_Status }) => {
           {heater_Status ? 'warm' : 'cool'}
         </span>
       </p>
+      <button 
+        onClick={onLedpin19Toggle} 
+        style={{
+          marginTop: '10px',
+          padding: '10px',
+          backgroundColor: ledpin19_Status ? 'red' : 'green',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+        }}
+      >
+        {ledpin19_Status ? 'Turn Off LED' : 'Turn On LED'}
+      </button>
     </div>
   );
 };
@@ -81,6 +95,7 @@ const SensorDataGraph = () => {
 
   const [motor_Status, setMotorStatus] = useState(false);
   const [heater_Status, setHeaterStatus] = useState(false);
+  const [ledpin19_Status, setLedpin19Status] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,10 +131,11 @@ const SensorDataGraph = () => {
           ],
         }));
 
-        // Set motor and heater status
-        const latestData = data[data.length - 1]; // Assuming latest data has the latest status
+        // Set motor, heater, and LED status
+        const latestData = data[data.length - 1];
         setMotorStatus(latestData.motor_status);
         setHeaterStatus(latestData.heater_status);
+        setLedpin19Status(latestData.ledpin19_status);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -128,10 +144,29 @@ const SensorDataGraph = () => {
 
     fetchData();
     
-    const interval = setInterval(fetchData, 5000); // Fetch data every 5 seconds
+    const interval = setInterval(fetchData, 5000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, []);
+
+  const handleLedpin19Toggle = async () => {
+    try {
+      const newStatus = !ledpin19_Status;
+      const response = await fetch('/api/sensordata/toggle-ledpin19', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ledpin19_status: newStatus }),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      setLedpin19Status(newStatus);
+    } catch (error) {
+      console.error('Error toggling LED:', error);
+    }
+  };
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
@@ -206,10 +241,16 @@ const SensorDataGraph = () => {
         </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-        <SensorStatus motor_Status={motor_Status} heater_Status={heater_Status} />
+        <SensorStatus 
+          motor_Status={motor_Status} 
+          heater_Status={heater_Status} 
+          ledpin19_Status={ledpin19_Status}
+          onLedpin19Toggle={handleLedpin19Toggle} 
+        />
       </div>
     </div>
   );
 };
 
 export default SensorDataGraph;
+

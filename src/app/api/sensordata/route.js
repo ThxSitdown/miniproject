@@ -1,3 +1,4 @@
+// app/api/sensordata/route.js
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
@@ -18,6 +19,12 @@ const handleError = (error) => {
 export async function GET() {
   try {
     const result = await pool.query('SELECT * FROM sensor_data ORDER BY id DESC LIMIT 1');
+    if (result.rowCount === 0) {
+      return new Response(JSON.stringify({ error: 'No data found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
     return new Response(JSON.stringify(result.rows[0]), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -29,7 +36,7 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { sensor_id, temperature, humidity, motor_status, heater_status, led_status, led_timer_start, led_timer_end } = await request.json();
+    const { sensor_id, temperature, humidity, motor_status, heater_status, ledpin19_status } = await request.json();
 
     if (!sensor_id || temperature == null || humidity == null) {
       return new Response(JSON.stringify({ error: 'Invalid input data' }), {
@@ -39,8 +46,8 @@ export async function POST(request) {
     }
 
     const res = await pool.query(
-      'INSERT INTO sensor_data (sensor_id, temperature, humidity, motor_status, heater_status, led_status, led_timer_start, led_timer_end) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-      [sensor_id, temperature, humidity, motor_status, heater_status, led_status, led_timer_start, led_timer_end]
+      'INSERT INTO sensor_data (sensor_id, temperature, humidity, motor_status, heater_status, ledpin19_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [sensor_id, temperature, humidity, motor_status, heater_status, ledpin19_status]
     );
     return new Response(JSON.stringify(res.rows[0]), {
       status: 201,
