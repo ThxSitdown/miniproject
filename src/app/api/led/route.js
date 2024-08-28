@@ -29,9 +29,9 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { ledStatus, led_timer_start, led_timer_end } = await request.json();
+    const { led_status, led_timer_start, led_timer_end } = await request.json();
 
-    if (ledStatus == null) {
+    if (led_status == null) {
       return new Response(JSON.stringify({ error: 'Invalid input data' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
