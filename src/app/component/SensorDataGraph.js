@@ -1,4 +1,4 @@
-// app/api/component/SensorDataDraph.js
+// app/api/component/SensorDataGraph.js
 "use client";
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
@@ -56,7 +56,7 @@ const SensorStatus = ({ motor_status, heater_status, ledpin19_status, onLedpin19
           cursor: 'pointer',
         }}
       >
-        {ledpin19status ? 'Turn Off LED' : 'Turn On LED'}
+        {ledpin19_status ? 'Turn Off LED' : 'Turn On LED'}
       </button>
     </div>
   );
@@ -152,9 +152,9 @@ const SensorDataGraph = () => {
       <Line data={temperatureData} />
       <Line data={humidityData} />
       <SensorStatus 
-        motorstatus={motorstatus} 
-        heaterstatus={heaterstatus}
-        ledpin19status={ledpin19status}
+        motor_status={motor_status} 
+        heater_status={heater_status}
+        ledpin19_status={ledpin19_status}
         onLedpin19Toggle={handleLedpin19Toggle} 
       />
     </div>
@@ -162,4 +162,3 @@ const SensorDataGraph = () => {
 };
 
 export default SensorDataGraph;
-
