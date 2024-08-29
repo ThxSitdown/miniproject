@@ -1,12 +1,14 @@
 // app/api/sensordata/route.js
-import { Pool } from 'pg';
+import { Client } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = new Pool({
+const client = new Client({
   connectionString: process.env.DATABASE_URL,
 });
+
+client.connect();
 
 const handleError = (error) => {
   console.error('Database error:', error);
@@ -18,7 +20,7 @@ const handleError = (error) => {
 
 export async function GET() {
   try {
-    const result = await pool.query('SELECT * FROM sensor_data ORDER BY id DESC LIMIT 1');
+    const result = await client.query('SELECT * FROM sensor_data ');
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ error: 'No data found' }), {
         status: 404,
@@ -45,7 +47,7 @@ export async function POST(request) {
       });
     }
 
-    const res = await pool.query(
+    const res = await client.query(
       'INSERT INTO sensor_data (sensor_id, temperature, humidity, motor_status, heater_status, ledpin19_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [sensor_id, temperature, humidity, motor_status, heater_status, ledpin19_status]
     );
@@ -57,4 +59,3 @@ export async function POST(request) {
     return handleError(error);
   }
 }
-
