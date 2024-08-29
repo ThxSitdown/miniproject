@@ -1,4 +1,3 @@
-// app/api/component/SensorDataGraph.js
 "use client";
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
@@ -41,7 +40,7 @@ const SensorStatus = ({ motor_status, heater_status, ledpin19_status, onLedpin19
       </p>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
         Heater: <span style={{ color: heater_status ? 'orange' : 'blue' }}>
-          {heater_status ? 'warm' : 'cool'}
+          {heater_status ? 'Warm' : 'Cool'}
         </span>
       </p>
       <button 
