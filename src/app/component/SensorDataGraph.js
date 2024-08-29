@@ -16,7 +16,7 @@ const SensorStatus = ({ motor_Status, heater_Status }) => {
     }}>
       <h3>Sensor Status</h3>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Motor: <span style={{ color: motor_Status ? 'green' : 'red' }}>{motor_Status ? 'On' : 'Off'}</span></p>
-      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>{heater_Status ? 'On' : 'Off'}</span></p>
+      <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>{heater_Status ? 'warm' : 'cool'}</span></p>
     </div>
   );
 };
