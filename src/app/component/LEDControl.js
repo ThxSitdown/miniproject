@@ -14,6 +14,8 @@ const LEDControlButton = () => {
                 const data = await response.json();
                 if (data.success) {
                     setLedStatus(data.status);
+                } else {
+                    console.error('Error fetching LED status:', data.error);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -28,7 +30,7 @@ const LEDControlButton = () => {
         const action = ledStatus ? 'off' : 'on';
 
         try {
-            const response = await fetch('/api/LEDstatus', {  // ตรวจสอบว่าเส้นทางตรงกันกับ API route
+            const response = await fetch('/api/LEDstatus', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,6 +41,8 @@ const LEDControlButton = () => {
             const data = await response.json();
             if (data.success) {
                 setLedStatus(!ledStatus);
+            } else {
+                console.error('Error updating LED status:', data.error);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -55,3 +59,4 @@ const LEDControlButton = () => {
 };
 
 export default LEDControlButton;
+
