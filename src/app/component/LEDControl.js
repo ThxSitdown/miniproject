@@ -1,4 +1,6 @@
-// components/LEDControl.js
+// src/app/component/LEDControl.js
+'use client';
+
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -9,7 +11,7 @@ const LEDControl = () => {
     try {
       const newStatus = !ledStatus;
       await axios.post('/api/sensordata', {
-        sensor_id: 1, // หรือ ID ที่เกี่ยวข้อง
+        sensor_id: 1,
         ledpin19_status: newStatus ? 1 : 0
       });
       setLedStatus(newStatus);
