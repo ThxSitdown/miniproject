@@ -27,9 +27,8 @@ export async function POST(request) {
       });
     }
 
-    // อัพเดทสถานะ LED pin19 ในฐานข้อมูลถ้าต้องการ
     await pool.query(
-      'UPDATE led_status SET status = $1 WHERE id = 1', // ใช้การอัพเดทให้ตรงกับฐานข้อมูลของคุณ
+      'UPDATE led_status SET status = $1 WHERE id = 1',
       [ledpin19_status]
     );
 
@@ -41,4 +40,5 @@ export async function POST(request) {
     return handleError(error);
   }
 }
+
 
