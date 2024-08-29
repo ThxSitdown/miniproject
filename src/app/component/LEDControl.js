@@ -10,7 +10,7 @@ const LEDControl = () => {
   const toggleLed = async () => {
     try {
       const newStatus = !ledStatus;
-      await axios.post('/api/sensordata', {
+      await axios.post('/api/LEDcontrol', {
         sensor_id: 1,
         ledpin19_status: newStatus ? 1 : 0
       });
