@@ -1,4 +1,4 @@
-
+// app/api/component/SensorDataDraph.js
 "use client";
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
@@ -137,11 +137,14 @@ const SensorDataGraph = () => {
       },
       body: JSON.stringify({ ledpin19_status: newStatus }),
     });
-
+  
     if (response.ok) {
+      console.log('LED status toggled successfully');
       setLedpin19Status(newStatus);
+    } else {
+      console.error('Failed to toggle LED status');
     }
-  };
+  };  
 
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
