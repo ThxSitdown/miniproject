@@ -1,12 +1,13 @@
 // src/app/component/LEDControl.js
 'use client';
 import { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
 
 const LEDControlButton = () => {
     const [ledStatus, setLedStatus] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // ฟังก์ชันเพื่ออัปเดตสถานะเริ่มต้นจาก API
+    // Function to fetch initial LED status from API
     useEffect(() => {
         const fetchLedStatus = async () => {
             try {
@@ -52,11 +53,16 @@ const LEDControlButton = () => {
     };
 
     return (
-        <button onClick={toggleLed} disabled={loading}>
-            {loading ? 'Processing...' : ledStatus ? 'Turn LED Off' : 'Turn LED On'}
-        </button>
+        <div className="d-flex justify-content-center align-items-center mb-4">
+            <button
+                onClick={toggleLed}
+                disabled={loading}
+                className={`btn ${loading ? 'btn-secondary' : ledStatus ? 'btn-danger' : 'btn-success'} me-2`}
+            >
+                {loading ? 'Processing...' : ledStatus ? 'Turn LED Off' : 'Turn LED On'}
+            </button>
+        </div>
     );
 };
 
 export default LEDControlButton;
-
