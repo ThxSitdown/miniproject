@@ -1,7 +1,7 @@
 // src/app/api/LEDstatus/route.js
 
 import { NextResponse } from 'next/server';
-import { pool } from '@/lib/db'; // สมมติว่าคุณตั้งค่า pool ของ pg ไว้ใน lib/db.js
+import { Pool } from 'pg';
 
 // GET: ดึงสถานะ LED ปัจจุบัน
 export async function GET() {
