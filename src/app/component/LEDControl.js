@@ -1,32 +1,40 @@
 // src/app/component/LEDControl.js
-'use client';
-
 import { useState } from 'react';
-import axios from 'axios';
 
-const LEDControl = () => {
-  const [ledStatus, setLedStatus] = useState(false);
+const LEDControlButton = () => {
+    const [ledStatus, setLedStatus] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  const toggleLed = async () => {
-    try {
-      const newStatus = !ledStatus;
-      await axios.post('/api/LEDcontrol', {
-        sensor_id: 1,
-        ledpin19_status: newStatus ? 1 : 0
-      });
-      setLedStatus(newStatus);
-    } catch (error) {
-      console.error('Failed to toggle LED:', error);
-    }
-  };
+    const toggleLed = async () => {
+        setLoading(true);
+        const action = ledStatus ? 'off' : 'on';
 
-  return (
-    <div>
-      <button onClick={toggleLed}>
-        {ledStatus ? 'Turn Off LED' : 'Turn On LED'}
-      </button>
-    </div>
-  );
+        try {
+            const response = await fetch('/api/LEDcontrol', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ action }),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                setLedStatus(!ledStatus);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <button onClick={toggleLed} disabled={loading}>
+            {loading ? 'Processing...' : ledStatus ? 'Turn LED Off' : 'Turn LED On'}
+        </button>
+    );
 };
 
-export default LEDControl;
+export default LEDControlButton;
+

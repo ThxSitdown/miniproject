@@ -1,25 +1,42 @@
-export async function POST(request) {
-    try {
-      const { ledpin19_status } = await request.json();
-  
-      if (typeof ledpin19_status === 'number' && (ledpin19_status === 0 || ledpin19_status === 1)) {
-        const res = await client.query(
-          'UPDATE sensor_data SET ledpin19_status = $1 WHERE sensor_id = 1 RETURNING *',
-          [ledpin19_status]
-        );
-        return new Response(JSON.stringify(res.rows[0]), {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        });
-      }
-      
-      return new Response(JSON.stringify({ error: 'Invalid input data. Expected 0 or 1.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-  
-    } catch (error) {
-      return handleError(error);
+import { Client } from 'pg';
+import { Gpio } from 'onoff';  // ใช้ไลบรารีสำหรับควบคุม GPIO
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    },
+});
+
+const ledPin = new Gpio(19, 'out');  // กำหนด pin19 เป็น output
+
+export default async function handler(req, res) {
+    if (req.method === 'POST') {
+        const { action } = req.body;
+
+        try {
+            await client.connect();
+
+            let status;
+            if (action === 'on') {
+                ledPin.writeSync(1);  // เปิด LED
+                status = true;
+            } else if (action === 'off') {
+                ledPin.writeSync(0);  // ปิด LED
+                status = false;
+            }
+
+            // บันทึกสถานะ LED ลงในฐานข้อมูล
+            const queryText = 'UPDATE led_status SET status = $1 WHERE pin = $2 RETURNING *';
+            const result = await client.query(queryText, [status, 19]);
+
+            res.status(200).json({ success: true, status: result.rows[0] });
+        } catch (error) {
+            res.status(500).json({ success: false, message: error.message });
+        } finally {
+            await client.end();
+        }
+    } else {
+        res.status(405).json({ message: 'Method Not Allowed' });
     }
-  }
-  
+}
