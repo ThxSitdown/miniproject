@@ -22,12 +22,12 @@ export async function GET() {
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ error: 'No data found' }), {
         status: 404,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
       });
     }
     return new Response(JSON.stringify(result.rows[0]), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
     });
   } catch (error) {
     return handleError(error);
