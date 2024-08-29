@@ -1,5 +1,3 @@
-// src/app/api/LEDstatus/route.js
-
 import { NextResponse } from 'next/server';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
@@ -19,16 +17,22 @@ const pool = new Pool({
 export async function GET() {
     try {
         const result = await pool.query('SELECT status FROM led_status WHERE pin = $1', [19]);
+        if (result.rows.length === 0) {
+            return NextResponse.json({ success: false, error: 'No data found for the specified pin' });
+        }
         const status = result.rows[0]?.status ?? false;
         return NextResponse.json({ success: true, status });
     } catch (error) {
-        return NextResponse.json({ success: false, error: error.message });
+        return NextResponse.json({ success: false, error: `Server error: ${error.message}` });
     }
 }
 
 export async function POST(req) {
     try {
         const { action } = await req.json();
+        if (typeof action !== 'string') {
+            return NextResponse.json({ success: false, error: 'Invalid request payload' });
+        }
         const status = action === 'on';
 
         const result = await pool.query('UPDATE led_status SET status = $1 WHERE pin = $2 RETURNING *', [status, 19]);
@@ -39,7 +43,6 @@ export async function POST(req) {
         
         return NextResponse.json({ success: true });
     } catch (error) {
-        return NextResponse.json({ success: false, error: error.message });
+        return NextResponse.json({ success: false, error: `Server error: ${error.message}` });
     }
 }
-
