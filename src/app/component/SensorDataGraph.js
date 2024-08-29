@@ -76,11 +76,16 @@ const SensorDataGraph = () => {
         }
         const data = await response.json();
         console.log('Fetched Data:', data);
-
+    
+        if (!Array.isArray(data) || data.length === 0) {
+          console.error('Data is not an array or is empty');
+          return;
+        }
+    
         const timestamps = data.map(item => item.timestamp);
         const temperatures = data.map(item => item.temperature);
         const humidities = data.map(item => item.humidity);
-
+    
         setTemperatureData(prevData => ({
           labels: timestamps,
           datasets: [
@@ -90,7 +95,7 @@ const SensorDataGraph = () => {
             },
           ],
         }));
-
+    
         setHumidityData(prevData => ({
           labels: timestamps,
           datasets: [
@@ -100,16 +105,15 @@ const SensorDataGraph = () => {
             },
           ],
         }));
-
-        // Set motor and heater status
+    
         const latestData = data[data.length - 1]; // Assuming latest data has the latest status
         setMotorStatus(latestData.motor_status);
         setHeaterStatus(latestData.heater_status);
-
+    
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    };
+    };    
 
     fetchData();
     
