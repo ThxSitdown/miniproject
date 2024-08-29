@@ -1,48 +1,68 @@
-import { NextResponse } from 'next/server';
-import { Pool } from 'pg';
+// app/api/LEDcontrol/route.js
+import { Client } from 'pg';
 import dotenv from 'dotenv';
 
-// โหลด environment variables
 dotenv.config();
 
 // ตั้งค่าการเชื่อมต่อกับ PostgreSQL
-const pool = new Pool({
-    user: process.env.PG_USER,
-    host: process.env.PG_HOST,
-    database: process.env.PG_DATABASE,
-    password: process.env.PG_PASSWORD,
-    port: process.env.PG_PORT,
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
 });
+
+client.connect();
+
+const handleError = (error) => {
+    console.error('Database error:', error);
+    return new Response(JSON.stringify({ success: false, error: 'Internal Server Error' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+    });
+};
 
 export async function GET() {
     try {
-        const result = await pool.query('SELECT status FROM led_status WHERE pin = $1', [19]);
-        if (result.rows.length === 0) {
-            return NextResponse.json({ success: false, error: 'No data found for the specified pin' });
+        const result = await client.query('SELECT status FROM led_status WHERE pin = $1', [19]);
+        if (result.rowCount === 0) {
+            return new Response(JSON.stringify({ success: false, error: 'No data found for the specified pin' }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
         const status = result.rows[0]?.status ?? false;
-        return NextResponse.json({ success: true, status });
+        return new Response(JSON.stringify({ success: true, status }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
     } catch (error) {
-        return NextResponse.json({ success: false, error: `Server error: ${error.message}` });
+        return handleError(error);
     }
 }
 
-export async function POST(req) {
+export async function POST(request) {
     try {
-        const { action } = await req.json();
+        const { action } = await request.json();
         if (typeof action !== 'string') {
-            return NextResponse.json({ success: false, error: 'Invalid request payload' });
+            return new Response(JSON.stringify({ success: false, error: 'Invalid request payload' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
         const status = action === 'on';
 
-        const result = await pool.query('UPDATE led_status SET status = $1 WHERE pin = $2 RETURNING *', [status, 19]);
-        
+        const result = await client.query('UPDATE led_status SET status = $1 WHERE pin = $2 RETURNING *', [status, 19]);
+
         if (result.rowCount === 0) {
-            return NextResponse.json({ success: false, error: 'Failed to update LED status' });
+            return new Response(JSON.stringify({ success: false, error: 'Failed to update LED status' }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
-        
-        return NextResponse.json({ success: true });
+
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
     } catch (error) {
-        return NextResponse.json({ success: false, error: `Server error: ${error.message}` });
+        return handleError(error);
     }
 }
