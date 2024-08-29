@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19Toggle }) => {
+const SensorStatus = ({ motorstatus, heaterstatus, ledpin19status, onLedpin19Toggle }) => {
   return (
     <div style={{ 
       marginTop: '20px', 
@@ -35,13 +35,13 @@ const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19
     }}>
       <h3>Sensor Status</h3>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
-        Motor: <span style={{ color: motor_Status ? 'green' : 'red' }}>
-          {motor_Status ? 'On' : 'Off'}
+        Motor: <span style={{ color: motorstatus ? 'green' : 'red' }}>
+          {motorstatus ? 'On' : 'Off'}
         </span>
       </p>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
-        Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>
-          {heater_Status ? 'warm' : 'cool'}
+        Heater: <span style={{ color: heaterstatus ? 'orange' : 'blue' }}>
+          {heaterstatus ? 'warm' : 'cool'}
         </span>
       </p>
       <button 
@@ -49,14 +49,14 @@ const SensorStatus = ({ motor_Status, heater_Status, ledpin19_Status, onLedpin19
         style={{
           marginTop: '10px',
           padding: '10px',
-          backgroundColor: ledpin19_Status ? 'red' : 'green',
+          backgroundColor: ledpin19status ? 'red' : 'green',
           color: 'white',
           border: 'none',
           borderRadius: '5px',
           cursor: 'pointer',
         }}
       >
-        {ledpin19_Status ? 'Turn Off LED' : 'Turn On LED'}
+        {ledpin19status ? 'Turn Off LED' : 'Turn On LED'}
       </button>
     </div>
   );
@@ -89,9 +89,9 @@ const SensorDataGraph = () => {
     ],
   });
 
-  const [motor_Status, setMotorStatus] = useState(false);
-  const [heater_Status, setHeaterStatus] = useState(false);
-  const [ledpin19_Status, setLedpin19Status] = useState(false);
+  const [motorstatus, setMotorStatus] = useState(false);
+  const [heaterstatus, setHeaterStatus] = useState(false);
+  const [ledpin19status, setLedpin19Status] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -129,7 +129,7 @@ const SensorDataGraph = () => {
   }, []);
 
   const handleLedpin19Toggle = async () => {
-    const newStatus = !ledpin19_Status;
+    const newStatus = !ledpin19status;
     const response = await fetch('/api/sensordata/toggle-ledpin19', {
       method: 'POST',
       headers: {
@@ -152,9 +152,9 @@ const SensorDataGraph = () => {
       <Line data={temperatureData} />
       <Line data={humidityData} />
       <SensorStatus 
-        motor_Status={motor_Status} 
-        heater_Status={heater_Status}
-        ledpin19_Status={ledpin19_Status}
+        motorstatus={motorstatus} 
+        heaterstatus={heaterstatus}
+        ledpin19status={ledpin19status}
         onLedpin19Toggle={handleLedpin19Toggle} 
       />
     </div>
@@ -162,3 +162,4 @@ const SensorDataGraph = () => {
 };
 
 export default SensorDataGraph;
+
