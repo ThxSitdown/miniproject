@@ -20,14 +20,14 @@ const handleError = (error) => {
 
 export async function GET() {
   try {
-    const result = await client.query('SELECT * FROM sensor_data ');
+    const result = await client.query('SELECT * FROM sensor_data');
     if (result.rowCount === 0) {
-      return new Response(JSON.stringify({ error: 'No data found' }), {
-        status: 404,
+      return new Response(JSON.stringify([]), {
+        status: 200,
         headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
       });
     }
-    return new Response(JSON.stringify(result.rows[0]), {
+    return new Response(JSON.stringify(result.rows), {
       status: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
     });

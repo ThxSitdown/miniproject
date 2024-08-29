@@ -43,7 +43,7 @@ export default function Navbar() {
                             <Link className="nav-link active" aria-current="page" href="/">Tem</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" href="/about">About</Link>
+                            <Link className="nav-link" href="/about">Graph</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" href="/service">Service</Link>

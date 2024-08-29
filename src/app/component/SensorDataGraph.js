@@ -1,34 +1,19 @@
-// app/component/SensorDataGraph.js
-
 "use client";
 import { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 // SensorStatus Component
 const SensorStatus = ({ motor_Status, heater_Status }) => {
   return (
-    <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ddd', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+    <div style={{ 
+      marginTop: '20px', 
+      padding: '10px', 
+      border: '1px solid #ddd', 
+      borderRadius: '5px', 
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
+      textAlign: 'center' // Center align text
+    }}>
       <h3>Sensor Status</h3>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Motor: <span style={{ color: motor_Status ? 'green' : 'red' }}>{motor_Status ? 'On' : 'Off'}</span></p>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>Heater: <span style={{ color: heater_Status ? 'orange' : 'blue' }}>{heater_Status ? 'On' : 'Off'}</span></p>
@@ -38,31 +23,8 @@ const SensorStatus = ({ motor_Status, heater_Status }) => {
 
 // SensorDataGraph Component
 const SensorDataGraph = () => {
-  const [temperatureData, setTemperatureData] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: 'Temperature (°C)',
-        data: [],
-        borderColor: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        fill: true,
-      },
-    ],
-  });
-
-  const [humidityData, setHumidityData] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: 'Humidity (%)',
-        data: [],
-        borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        fill: true,
-      },
-    ],
-  });
+  const [temperature, setTemperature] = useState(0);
+  const [humidity, setHumidity] = useState(0);
 
   const [motor_Status, setMotorStatus] = useState(false);
   const [heater_Status, setHeaterStatus] = useState(false);
@@ -76,40 +38,18 @@ const SensorDataGraph = () => {
         }
         const data = await response.json();
         console.log('Fetched Data:', data);
-    
+  
         if (!Array.isArray(data) || data.length === 0) {
           console.error('Data is not an array or is empty');
           return;
         }
-    
-        const timestamps = data.map(item => item.timestamp);
-        const temperatures = data.map(item => item.temperature);
-        const humidities = data.map(item => item.humidity);
-    
-        setTemperatureData(prevData => ({
-          labels: timestamps,
-          datasets: [
-            {
-              ...prevData.datasets[0],
-              data: temperatures,
-            },
-          ],
-        }));
-    
-        setHumidityData(prevData => ({
-          labels: timestamps,
-          datasets: [
-            {
-              ...prevData.datasets[0],
-              data: humidities,
-            },
-          ],
-        }));
-    
+  
         const latestData = data[data.length - 1]; // Assuming latest data has the latest status
+        setTemperature(latestData.temperature);
+        setHumidity(latestData.humidity);
         setMotorStatus(latestData.motor_status);
         setHeaterStatus(latestData.heater_status);
-    
+  
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -124,77 +64,45 @@ const SensorDataGraph = () => {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
-        <div style={{ flex: 1, minWidth: '45%' }}>
-          <h2>Temperature Graph</h2>
-          <Line
-            data={temperatureData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top',
-                },
-                tooltip: {
-                  callbacks: {
-                    label: (context) => `${context.dataset.label}: ${context.raw}°C`,
-                  },
-                },
-              },
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: 'Timestamp',
-                  },
-                },
-                y: {
-                  title: {
-                    display: true,
-                    text: 'Temperature (°C)',
-                  },
-                },
-              },
-            }}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-around', // Use space-around for closer alignment
+        alignItems: 'center', 
+        gap: '10px', // Reduce the gap
+        flexWrap: 'wrap' // Allow wrapping on smaller screens
+      }}>
+        <div style={{ width: '180px', height: '180px' }}> {/* Adjust width and height */}
+          <h2>Temperature</h2>
+          <CircularProgressbar
+            value={temperature}
+            maxValue={50} // Adjust according to your needs
+            text={`${temperature}°C`}
+            styles={buildStyles({
+              textColor: '#333',
+              pathColor: 'rgba(255, 99, 132, 1)',
+              trailColor: '#ddd',
+              strokeLinecap: 'round',
+            })}
           />
         </div>
-        <div style={{ flex: 1, minWidth: '45%' }}>
-          <h2>Humidity Graph</h2>
-          <Line
-            data={humidityData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top',
-                },
-                tooltip: {
-                  callbacks: {
-                    label: (context) => `${context.dataset.label}: ${context.raw}%`,
-                  },
-                },
-              },
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: 'Timestamp',
-                  },
-                },
-                y: {
-                  title: {
-                    display: true,
-                    text: 'Humidity (%)',
-                  },
-                },
-              },
-            }}
+        <div style={{ width: '180px', height: '180px' }}> {/* Adjust width and height */}
+          <h2>Humidity</h2>
+          <CircularProgressbar
+            value={humidity}
+            maxValue={100} // Adjust according to your needs
+            text={`${humidity}%`}
+            styles={buildStyles({
+              textColor: '#333',
+              pathColor: 'rgba(54, 162, 235, 1)',
+              trailColor: '#ddd',
+              strokeLinecap: 'round',
+            })}
           />
         </div>
       </div>
-      <SensorStatus motor_Status={motor_Status} heater_Status={heater_Status} />
+      <div style={{ display: 'flex', justifyContent: 'center' }}> {/* Center the SensorStatus component */}
+        <SensorStatus motor_Status={motor_Status} heater_Status={heater_Status} />
+      </div>
     </div>
   );
 };
