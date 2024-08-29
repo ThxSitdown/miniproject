@@ -1,21 +1,31 @@
 // src/app/api/LEDstatus/route.js
 
 import { NextResponse } from 'next/server';
-import { Client } from 'pg';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
-// GET: ดึงสถานะ LED ปัจจุบัน
+// โหลด environment variables
+dotenv.config();
+
+// ตั้งค่าการเชื่อมต่อกับ PostgreSQL
+const pool = new Pool({
+    user: process.env.PG_USER,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE,
+    password: process.env.PG_PASSWORD,
+    port: process.env.PG_PORT,
+});
+
 export async function GET() {
     try {
         const result = await pool.query('SELECT status FROM led_status WHERE pin = $1', [19]);
-        const status = result.rows[0]?.status ?? false; // ใช้ ?? แทน || เพื่อให้แน่ใจว่าจะแสดง false ก็ต่อเมื่อ undefined หรือ null
+        const status = result.rows[0]?.status ?? false;
         return NextResponse.json({ success: true, status });
     } catch (error) {
         return NextResponse.json({ success: false, error: error.message });
     }
 }
 
-// POST: อัปเดตสถานะ LED
 export async function POST(req) {
     try {
         const { action } = await req.json();
@@ -32,3 +42,4 @@ export async function POST(req) {
         return NextResponse.json({ success: false, error: error.message });
     }
 }
+
