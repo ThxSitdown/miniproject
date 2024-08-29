@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const SensorStatus = ({ motorstatus, heaterstatus, ledpin19status, onLedpin19Toggle }) => {
+const SensorStatus = ({ motor_status, heater_status, ledpin19_status, onLedpin19Toggle }) => {
   return (
     <div style={{ 
       marginTop: '20px', 
@@ -35,13 +35,13 @@ const SensorStatus = ({ motorstatus, heaterstatus, ledpin19status, onLedpin19Tog
     }}>
       <h3>Sensor Status</h3>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
-        Motor: <span style={{ color: motorstatus ? 'green' : 'red' }}>
-          {motorstatus ? 'On' : 'Off'}
+        Motor: <span style={{ color: motor_status ? 'green' : 'red' }}>
+          {motor_status ? 'On' : 'Off'}
         </span>
       </p>
       <p style={{ fontSize: '16px', fontWeight: 'bold' }}>
-        Heater: <span style={{ color: heaterstatus ? 'orange' : 'blue' }}>
-          {heaterstatus ? 'warm' : 'cool'}
+        Heater: <span style={{ color: heater_status ? 'orange' : 'blue' }}>
+          {heater_status ? 'warm' : 'cool'}
         </span>
       </p>
       <button 
@@ -49,7 +49,7 @@ const SensorStatus = ({ motorstatus, heaterstatus, ledpin19status, onLedpin19Tog
         style={{
           marginTop: '10px',
           padding: '10px',
-          backgroundColor: ledpin19status ? 'red' : 'green',
+          backgroundColor: ledpin19_status ? 'red' : 'green',
           color: 'white',
           border: 'none',
           borderRadius: '5px',
@@ -89,9 +89,9 @@ const SensorDataGraph = () => {
     ],
   });
 
-  const [motorstatus, setMotorStatus] = useState(false);
-  const [heaterstatus, setHeaterStatus] = useState(false);
-  const [ledpin19status, setLedpin19Status] = useState(false);
+  const [motor_status, setMotorStatus] = useState(false);
+  const [heater_status, setHeaterStatus] = useState(false);
+  const [ledpin19_status, setLedpin19Status] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -129,7 +129,7 @@ const SensorDataGraph = () => {
   }, []);
 
   const handleLedpin19Toggle = async () => {
-    const newStatus = !ledpin19status;
+    const newStatus = !ledpin19_status;
     const response = await fetch('/api/sensordata/toggle-ledpin19', {
       method: 'POST',
       headers: {
