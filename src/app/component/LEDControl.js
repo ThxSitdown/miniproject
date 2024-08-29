@@ -10,7 +10,7 @@ const LEDControlButton = () => {
     useEffect(() => {
         const fetchLedStatus = async () => {
             try {
-                const response = await fetch('/api/LEDstatus');
+                const response = await fetch('/api/LEDcontrol');
                 const data = await response.json();
                 if (data.success) {
                     setLedStatus(data.status);
@@ -30,7 +30,7 @@ const LEDControlButton = () => {
         const action = ledStatus ? 'off' : 'on';
 
         try {
-            const response = await fetch('/api/LEDstatus', {
+            const response = await fetch('/api/LEDcontrol', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
