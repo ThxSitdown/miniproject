@@ -1,7 +1,8 @@
 // src/app/api/LEDstatus/route.js
 
 import { NextResponse } from 'next/server';
-import { Pool } from 'pg';
+import { Client } from 'pg';
+import dotenv from 'dotenv';
 
 // GET: ดึงสถานะ LED ปัจจุบัน
 export async function GET() {
