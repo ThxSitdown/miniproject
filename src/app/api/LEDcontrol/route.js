@@ -1,42 +1,33 @@
-import { Client } from 'pg';
-import { Gpio } from 'onoff';  // ใช้ไลบรารีสำหรับควบคุม GPIO
+// src/app/api/LEDstatus/route.js
 
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
-});
+import { NextResponse } from 'next/server';
+import { pool } from '@/lib/db'; // สมมติว่าคุณตั้งค่า pool ของ pg ไว้ใน lib/db.js
 
-const ledPin = new Gpio(19, 'out');  // กำหนด pin19 เป็น output
+// GET: ดึงสถานะ LED ปัจจุบัน
+export async function GET() {
+    try {
+        const result = await pool.query('SELECT status FROM led_status WHERE pin = $1', [19]);
+        const status = result.rows[0]?.status ?? false; // ใช้ ?? แทน || เพื่อให้แน่ใจว่าจะแสดง false ก็ต่อเมื่อ undefined หรือ null
+        return NextResponse.json({ success: true, status });
+    } catch (error) {
+        return NextResponse.json({ success: false, error: error.message });
+    }
+}
 
-export default async function handler(req, res) {
-    if (req.method === 'POST') {
-        const { action } = req.body;
+// POST: อัปเดตสถานะ LED
+export async function POST(req) {
+    try {
+        const { action } = await req.json();
+        const status = action === 'on';
 
-        try {
-            await client.connect();
-
-            let status;
-            if (action === 'on') {
-                ledPin.writeSync(1);  // เปิด LED
-                status = true;
-            } else if (action === 'off') {
-                ledPin.writeSync(0);  // ปิด LED
-                status = false;
-            }
-
-            // บันทึกสถานะ LED ลงในฐานข้อมูล
-            const queryText = 'UPDATE led_status SET status = $1 WHERE pin = $2 RETURNING *';
-            const result = await client.query(queryText, [status, 19]);
-
-            res.status(200).json({ success: true, status: result.rows[0] });
-        } catch (error) {
-            res.status(500).json({ success: false, message: error.message });
-        } finally {
-            await client.end();
+        const result = await pool.query('UPDATE led_status SET status = $1 WHERE pin = $2 RETURNING *', [status, 19]);
+        
+        if (result.rowCount === 0) {
+            return NextResponse.json({ success: false, error: 'Failed to update LED status' });
         }
-    } else {
-        res.status(405).json({ message: 'Method Not Allowed' });
+        
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        return NextResponse.json({ success: false, error: error.message });
     }
 }

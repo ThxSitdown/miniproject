@@ -1,16 +1,34 @@
 // src/app/component/LEDControl.js
-import { useState } from 'react';
+'use client';
+import { useState, useEffect } from 'react';
 
 const LEDControlButton = () => {
     const [ledStatus, setLedStatus] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    // ฟังก์ชันเพื่ออัปเดตสถานะเริ่มต้นจาก API
+    useEffect(() => {
+        const fetchLedStatus = async () => {
+            try {
+                const response = await fetch('/api/LEDstatus');
+                const data = await response.json();
+                if (data.success) {
+                    setLedStatus(data.status);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchLedStatus();
+    }, []);
 
     const toggleLed = async () => {
         setLoading(true);
         const action = ledStatus ? 'off' : 'on';
 
         try {
-            const response = await fetch('/api/LEDcontrol', {
+            const response = await fetch('/api/LEDstatus', {  // ตรวจสอบว่าเส้นทางตรงกันกับ API route
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,4 +55,3 @@ const LEDControlButton = () => {
 };
 
 export default LEDControlButton;
-
